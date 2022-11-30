@@ -1,6 +1,6 @@
 # monitoring
 
-To run frontend - app.js
+To run frontend
 ## Project setup
 ```
 npm install
