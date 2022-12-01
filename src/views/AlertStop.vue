@@ -1,13 +1,13 @@
 <template>
-  <show-alerts/>
+  <stop-alerts/>
 </template>
 
 <script>
-import ShowAlerts from '../components/ShowAlerts'
+import StopAlerts from '../components/StopAlerts'
   export default {
     name: 'Alert',
     components: {
-      ShowAlerts
+      StopAlerts
     },
   }
 </script>

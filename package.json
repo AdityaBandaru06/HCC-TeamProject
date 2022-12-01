@@ -23,7 +23,8 @@
     "vue-socket.io": "^3.0.10",
     "vue-web-cam": "^1.9.0",
     "vuetify": "^2.6.0",
-    "vuetify-audio": "^0.3.3"
+    "vuetify-audio": "^0.3.3",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
