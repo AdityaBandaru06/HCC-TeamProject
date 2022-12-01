@@ -1,44 +1,26 @@
 <template>
 <v-card outlined color="transparent">
 <v-row>
-  <v-col cols="5">
+  <v-col cols="4">
     <template>
-        <div>Select your favourite <strong>alert</strong></div>
+        <h2>Select your favourite <strong>alert</strong></h2>
       </template>
-    <v-radio-group v-model="radios">
-      
-      <v-list>
-        <v-list-item
-          v-for="item in alerts"
+     <v-radio-group class="small-radio" v-model="radios"  v-for="item in alerts"
           :key="item.title"
-          :to="item.to"
-        >
-        <v-radio :value="item.title">
+          :to="item.to">
+        <v-radio :value="item.title" active-class="active" @click="alertSelected(item.title)"> 
         <template v-slot:label>
-          <div class="pa-4 blue-grey lighten-3 rounded-xl mb-5 pd-2"> 
+          <div class="pa-4 secondary lighten-1 rounded-xl mb-2 pd-2"> 
             <v-icon size="70" class="align-center"
             :color="item.color">{{item.icon}}
             </v-icon>
-            <v-icon size="70" class="align-center"
+            <v-icon size="68" class="align-center"
             :color="item.color2">{{item.icon2}}
             </v-icon>
             {{item.title}}</div>
         </template>
       </v-radio>
-        </v-list-item>
-      </v-list>
     </v-radio-group>
-  
-  <div class="pa-4 blue-grey lighten-3 rounded-lg mb-3 pd-2"> 
-  <v-checkbox
-              label="Seat Vibrate"
-              color="warning"
-              value="vibrate"
-              hide-details
-              append-icon="mdi-car-seat"
-  >
-  </v-checkbox>
-  </div>
   </v-col>
   <v-divider
       class="mx-4"
@@ -46,11 +28,11 @@
     ></v-divider>
   <v-col cols="6">
     <template>
-        <div>Choose your favourite <strong>alarm sound</strong></div>
+        <h2>Choose your favourite <strong>alarm sound</strong></h2>
     </template>
     <v-row>
+      <v-card-text>
      <v-select
-          v-model="e2"
           :items="sound"
           menu-props="auto"
           hide-details
@@ -59,14 +41,10 @@
           v-on:change="changeSound"
     ></v-select>
    
+    </v-card-text>
     <v-card-text>
-      <v-btn class="mx-6" dark color="blue-grey " @click="playSound()" >
-      <v-icon dark>
-        mdi-play
-      </v-icon>
-      </v-btn>
-      <v-btn class="mx-6" dark color="blue-grey " @click="stopSound()" >
-      <v-icon dark>
+      <v-btn :disabled="soundBtnDisable" class="mx-6" dark color="secondary" @click="stopSound()" >
+      <v-icon dark color="red">
         mdi-stop
       </v-icon>
       </v-btn>
@@ -74,10 +52,10 @@
         :disabled="soundBtnDisable"
         class="mx-6"
         dark
-        color="blue-grey"
+        color="secondary"
         @click="setSound()"
       >
-        <v-icon dark>
+        <v-icon dark color="green">
           mdi-plus
         </v-icon>
       </v-btn>
@@ -86,10 +64,12 @@
     <v-divider/>
 
     <template>
-        <div>Check your <strong>Camera</strong></div>
-        <v-btn class="mx-6" dark color="blue-grey " @click="onStart" >Start Camera</v-btn>
-        <v-btn class="mx-6" dark color="blue-grey " @click="onStop" >Stop Camera</v-btn>
+      <v-card outlined color="transparent" >
+        <div>Check your <strong>Camera</strong>  <v-btn class="mx-6" dark color="secondary " @click="onStop" >Stop Camera</v-btn></div>
+        <!--v-btn class="mx-6" dark color="blue-grey " @click="onStart" >Start Camera</v-btn-->
+       
         <div class="border">
+          
                     <web-cam
                         ref="webcam"
                         :device-id="deviceId"
@@ -102,9 +82,10 @@
                     />
   
                 </div>
-            <div>
-            <img :src="img" class="img-responsive" />
-            </div>
+        <div>
+          <img :src="img" class="img-responsive" />
+        </div>
+      </v-card>      
     </template>
    <web-cam/>
   </v-col>
@@ -116,37 +97,51 @@
 
 //import VueSocketIO from 'vue-socket.io';
 import { WebCam } from "vue-web-cam";
+import store from "../store";
+
   export default {
     name: 'SetAlerts',
     data () {
       return {
+        store,
         img: "",
+        alertType:"",
         camera: null,
         deviceId: null,
+        divClicked:false,
         devices: [],
         audio: null,
-        radios: 'Both',
-        btnText: 'Set Color to "Success" (Green)',
+        radios: '',
         sound: [],
         soundFile : 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
         color: 'grey',
         soundBtnDisable: true,
-        e2: 'Texas',
         alerts: [
           { title: 'Alarm Sound', icon: 'mdi-bell-alert', color:'green'},
           { title: 'Alert Message', icon: 'mdi-message-flash', color:'light-blue darken-2'},
           { title: 'Both', icon: 'mdi-bell-alert', icon2:'mdi-message-flash', color:'green', color2:'light-blue darken-2'},
+          { title: 'Seat Vibration', icon: 'mdi-seat', color:'dark-brown'},
         ],
       }
     },
     methods: {
+        alertSelected(alert){
+            console.log("selected alert",alert)
+            this.alertType = alert
+            store.dispatch("set_type", this.alertType)
+            console.log("type to show",store.state.alert_type)
+        },
         async changeSound(a) {
           this.soundBtnDisable = false
           this.soundFile = await require('../../assets/sounds/'+a)
-        },
-        playSound(){
           this.audio = new Audio(this.soundFile)
           this.audio.play()
+        },
+        setSound(){
+            console.log("set sound called")
+            //store.alert_sound = this.soundFile
+            store.dispatch("set_sound",this.soundFile)
+            console.log("Sound to show",store.state.alert_sound)
         },
         stopSound(){
           this.audio.pause()
@@ -209,6 +204,8 @@ import { WebCam } from "vue-web-cam";
       },
     },
   mounted(){
+    this.radios = store.getters.getAlertType
+    console.log("Previously stored type:", store.getters.getAlertType)
     const illustrations = require.context(
       '../../assets/sounds',
       true,
@@ -223,7 +220,29 @@ import { WebCam } from "vue-web-cam";
   components: {
     //VuetifyAudio: () => import('vuetify-audio'),
     WebCam
-}
+  }
   }
   
 </script>
+<style scoped>
+.red {
+  background-color: red;
+}
+.active .trucksicons {
+  border: 2px solid green;
+}
+.small-radio i {
+  font-size: 19px;
+}
+.small-radio label {
+  font-size: 14px;
+  padding-left: 0px;
+  margin-left: -4px;
+}
+.small-radio .v-radio {
+  padding: 0px;
+}
+.small-radio [class*="__ripple"] {
+  left: 0;
+}
+</style>
