@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify'
 import router from './router/index'
 
 Vue.config.productionTip = false
+export const serverBus = new Vue();
 
 new Vue({
   router,
