@@ -4,6 +4,7 @@ import Settings from '../views/Settings.vue'
 import Alert from '../views/Alert.vue'
 import Home from '../views/Home.vue'
 import AlertStop from '../views/AlertStop.vue'
+
 Vue.use(VueRouter)
 const routes = [
   {

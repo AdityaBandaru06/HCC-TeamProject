@@ -1,6 +1,7 @@
 <template>
 <v-card class="grey darken-4">
     <v-app id="inspire" >
+    <v-container fluid class=" fill-height">
     <v-app-bar
       app
       color="#212121"
@@ -33,13 +34,13 @@
     </v-app-bar>
     <v-navigation-drawer absolute
       v-model="drawer"
-      class="grey darken-4"
+      class="grey lighten-4"
       permanent
       app
       clipped
     >
     <v-list nav>
-      <v-list-item-group v-model="model">
+      <v-list-item-group v-model="model" active-class="SelectedTile-active">
         <v-list-item
           class="tile"
           v-for="item in items"
@@ -47,21 +48,24 @@
           :to="item.to"
           link
         > 
-        <div class="pa-4 text-center secondary text-no-wrap rounded-xl">
           <v-list-item-icon>
-            <v-icon size="100" class="ml-6"
+            <v-icon size="120" class="ml-6"
             :color="item.color">{{ item.icon }}</v-icon>
           </v-list-item-icon>
-        </div>
+        <v-divider/>
         </v-list-item>
          </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     <v-main>
+      <v-container fluid>
        <router-view></router-view>
+        </v-container>
     </v-main>
     <div v-if="shouldRender">
     </div>
+
+    </v-container>
    <v-footer padless>
        <v-row
       justify="center"
@@ -90,6 +94,10 @@ export default {
   components: {
   },
   data: () => ({
+    windowSize: {
+      x: 0,
+      y: 0
+    },
     timestamp: "",
     drawer: true,
     shouldRender : true,
@@ -108,6 +116,9 @@ export default {
   created() {
                 setInterval(this.getNow, 1000);
   },
+  mounted(){
+    this.onResize()
+  },
   methods: {
             getNow: function() {
                     const today = new Date();
@@ -116,6 +127,9 @@ export default {
                     const dateTime = date +' '+ time;
                     this.timestamp = dateTime;
                 },
+              onResize () {
+                this.windowSize = { x: window.innerWidth, y: window.innerHeight }
+    }
     },  
 };
 </script>
@@ -123,11 +137,10 @@ export default {
   .tile {
     margin: 5px;
     border-radius: 4px;
+    background: rgb(0, 0, 0);
   }
-  .tile:hover {
-    background: green;
+  .SelectedTile-active{
+    background: rgb(163, 185, 185);
   }
-  .tile:active {
-    background: yellow;
-  }
+
 </style>
