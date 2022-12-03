@@ -1,5 +1,5 @@
 <template>
-<v-card outlined color="transparent">
+<v-card height="100%" width="100%" outlined color="transparent">
 <v-row>
   <v-col cols="4">
     <template>
@@ -10,7 +10,7 @@
           :to="item.to">
         <v-radio :value="item.title" active-class="active" @click="alertSelected(item.title)"> 
         <template v-slot:label>
-          <div class="pa-4 secondary lighten-1 rounded-xl mb-2 pd-2"> 
+          <div class="pa-4 secondary lighten-1 rounded-xl mb-2 pd-2" style="color:white" v-on:click="changeActive(index)"> 
             <v-icon size="70" class="align-center"
             :color="item.color">{{item.icon}}
             </v-icon>
@@ -43,33 +43,38 @@
    
     </v-card-text>
     <v-card-text>
-      <v-btn :disabled="soundBtnDisable" class="mx-6" dark color="secondary" @click="stopSound()" >
+      <v-btn x-large :disabled="soundBtnDisable" class="mx-6" dark color="secondary" active-class="active" @click="stopSound()" >
       <v-icon dark color="red">
         mdi-stop
       </v-icon>
       </v-btn>
+
       <v-btn
         :disabled="soundBtnDisable"
         class="mx-6"
+        x-large
         dark
         color="secondary"
+        active-class="active"
         @click="setSound()"
       >
         <v-icon dark color="green">
           mdi-plus
         </v-icon>
       </v-btn>
+
     </v-card-text>
     </v-row>
     <v-divider/>
 
     <template>
-      <v-card outlined color="transparent" >
-        <div>Check your <strong>Camera</strong>  <v-btn class="mx-6" dark color="secondary " @click="onStop" >Stop Camera</v-btn></div>
-        <!--v-btn class="mx-6" dark color="blue-grey " @click="onStart" >Start Camera</v-btn-->
-       
-        <div class="border">
-          
+
+        <div>Check your <strong>Camera</strong> (please position face with 0.99 confidence)</div>
+          <v-card-text>
+         <!--v-btn x-large class="mx-6" dark color="secondary " @click="onStop" active-class="active" >Stop Camera</v-btn-->
+                   <video-check/>
+          </v-card-text>
+         <!--v-btn class="mx-6" dark color="blue-grey " @click="onStart" >Start Camera</v-btn>
                     <web-cam
                         ref="webcam"
                         :device-id="deviceId"
@@ -81,11 +86,12 @@
                         @camera-change="onCameraChange"
                     />
   
-                </div>
-        <div>
-          <img :src="img" class="img-responsive" />
-        </div>
-      </v-card>      
+     
+
+          <img :src="img" class="img-responsive" /-->
+
+
+  
     </template>
    <web-cam/>
   </v-col>
@@ -98,6 +104,7 @@
 //import VueSocketIO from 'vue-socket.io';
 import { WebCam } from "vue-web-cam";
 import store from "../store";
+import VideoCheck from './VideoCheck.vue';
 
   export default {
     name: 'SetAlerts',
@@ -125,6 +132,9 @@ import store from "../store";
       }
     },
     methods: {
+        changeActive(index){
+          console.log(index)
+        },
         alertSelected(alert){
             console.log("selected alert",alert)
             this.alertType = alert
@@ -217,9 +227,15 @@ import store from "../store";
     });
     this.sound = sound
   },
+  beforeDestroy(){
+    if (this.audio!=null){
+      this.audio.pause();
+    }
+  },
   components: {
     //VuetifyAudio: () => import('vuetify-audio'),
-    WebCam
+    WebCam,
+    VideoCheck
   }
   }
   
@@ -228,8 +244,8 @@ import store from "../store";
 .red {
   background-color: red;
 }
-.active .trucksicons {
-  border: 2px solid green;
+.active {
+  background: rgb(163, 185, 185);
 }
 .small-radio i {
   font-size: 19px;

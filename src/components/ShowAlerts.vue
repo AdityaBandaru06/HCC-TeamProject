@@ -1,11 +1,11 @@
 <template>
 <v-card outlined color="transparent">
-     <v-row class="fill-height" align="center" justify="center">
+<v-row class="fill-height" align="center" justify="center">
 <button ref="audioBtn" @click="logClicked"/>
-<v-img contain
+<v-img contain 
           :src="imgUrl"
-          max-height="70%"
-          max-width="70%"
+          max-height="100%"
+          max-width="100%"
 ></v-img>
 <v-dialog
       v-model="dialog"
@@ -43,7 +43,7 @@ import store from "../store";
     data () {
       return {
         alertImgUrl:'https://media1.giphy.com/media/XHp1pFrJKQsJyp4ny0/giphy.gif?cid=6c09b952bx5w0whtr0gz641l5q28hm8i2676traf04ojkd6w&rid=giphy.gif&ct=s',
-        monitoringOnUrl:'https://cdn3.iconfinder.com/data/icons/new-electronic-devices-2020/512/Electronic-Devices-Technology_camera-security-dashcam-car-512.png',
+        monitoringOnUrl:'https://i.gifer.com/Cn52.gif',
         imgUrl :'',
         alertSound :'',
         dialog : false,
