@@ -70,6 +70,10 @@ export default {
 
     }
     onBeforeUnmount(()=>{
+       /**
+       * stop streaming
+       * @function
+       */
       const stream = videoEl.value.srcObject;
         const tracks = stream.getTracks()
 
@@ -89,11 +93,12 @@ export default {
         await faceAPI.nets.faceLandmark68Net.loadFromUri(initParams.modelUri)
         await faceAPI.nets.faceRecognitionNet.loadFromUri(initParams.modelUri)
       }
-      /**
+
+      const startStream = async () => {
+       /**
        * startup webcam
        * @function
        */
-      const startStream = async () => {
         try {
           const stream = await navigator.mediaDevices.getUserMedia(constraints)
           videoEl.value.srcObject = stream

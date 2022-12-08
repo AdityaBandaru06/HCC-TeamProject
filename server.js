@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
       mode: 'text',
       pythonOptions: ['-u'],
       scriptPath: './',
-      args: ['-p','shape_predictor_68_face_landmarks.dat']
+      args: ['-p','public/models/shape_predictor_68_face_landmarks.dat']
     };
     try{
        shell = new PythonShell('drowsy.py', options);

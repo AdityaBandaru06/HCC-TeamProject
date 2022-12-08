@@ -15,6 +15,7 @@ export default {
     name: 'StopAlerts',
     data () {
       return {
+         //default image
          goodImgUrl:'https://st4.depositphotos.com/1008010/23468/i/450/depositphotos_234684752-stock-photo-empty-road-yellow-traffic-sign.jpg',
       }
     },
@@ -25,6 +26,10 @@ export default {
     },
    
   mounted(){
+     /**
+       * socket connection
+       * @function
+     */
      this.imgUrl = this.goodImgUrl
      SocketioService.setupSocketConnection();
      SocketioService.socket.emit('stop-monitoring', {});
@@ -33,6 +38,10 @@ export default {
      });
   },
   beforeUnmount() {
+      /**
+       * socket disconnect
+       * @function
+       */
        SocketioService.disconnect();
     }
 

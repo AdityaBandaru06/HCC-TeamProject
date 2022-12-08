@@ -8,6 +8,7 @@ import sys
 import cv2
 import time
 
+#calculating eye aspect ration
 def eye_aspect_ratio(eye):
   A = distance.euclidean(eye[1], eye[5])
   B = distance.euclidean(eye[2], eye[4])  
@@ -15,12 +16,12 @@ def eye_aspect_ratio(eye):
   ear = (A+B) / (2.0 * C)
   return ear
 
+#start video stream
 def start_video_stream(arg):
   vs =VideoStream(src=arg).start()
   return vs
 
-# Get CMD Command
-
+#executed when python shell is executed
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--shape-predictor", help = "path to facial landmark predictor")
 ap.add_argument("-w", "--webcam", type=int, default=0, help="index of webcam on system")
@@ -28,9 +29,12 @@ ap.add_argument("-s", "--stop", type=str, default='start', help="index of webcam
 args = vars(ap.parse_args())
 
 if args['stop']== 'start':
+  #eye aspect ration threshold
   EYE_AR_THRESH = 0.3
+  #eye aspect ration in max consecutive frames
   COUNTER = 0
   TOTAL = 0
+  #max number of consecutive frames
   EYE_AR_CONSEC_FRAMES = 48
 
   detector = dlib.get_frontal_face_detector()
@@ -40,7 +44,7 @@ if args['stop']== 'start':
                                                   
   vs =VideoStream(src=args['webcam']).start()
   currentCount = 0
-  face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+  face_cascade = cv2.CascadeClassifier('public/models/haarcascade_frontalface_default.xml')
 
   while True:
     frame = vs.read()
