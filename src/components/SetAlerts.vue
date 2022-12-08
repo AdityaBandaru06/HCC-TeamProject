@@ -136,12 +136,20 @@ import VideoCheck from './VideoCheck.vue';
           console.log(index)
         },
         alertSelected(alert){
+            /**
+               * when alert is selected
+               * @function
+            */
             console.log("selected alert",alert)
             this.alertType = alert
             store.dispatch("set_type", this.alertType)
             console.log("type to show",store.state.alert_type)
         },
         async changeSound(a) {
+          /**
+               * set selected sound from dropdown
+               * @function
+          */
           this.soundBtnDisable = false
           this.soundFile = await require('../../assets/sounds/'+a)
           this.audio = new Audio(this.soundFile)
@@ -154,6 +162,10 @@ import VideoCheck from './VideoCheck.vue';
             console.log("Sound to show",store.state.alert_sound)
         },
         stopSound(){
+          /**
+               * stop sound 
+               * @function
+            */
           this.audio.pause()
         },
         setColor () {

@@ -52,16 +52,28 @@ import store from "../store";
     },
     methods: {
         async logClicked(){
+          /**
+             * play alert sound
+             * @function
+          */
           this.audio = new Audio(store.state.alert_sound)
           this.audio.play()
         },
         stopAlerts(){
+            /**
+             * stop alert and route to home
+             * @function
+             */
             this.dialog = false,
             this.audio.pause()
             this.$router.push('/')
             SocketioService.disconnect();
         },
         async resetImgUrl(message){
+           /**
+           * resetting image url to alert type
+           * @function
+           */
           console.log("reset image url called",message.message)
 
           if(message.message=='Play Message'){
@@ -82,12 +94,20 @@ import store from "../store";
         }  
     },
     updated() {
+        /**
+         * setting alert active
+         * @function
+         */
          if (store.state.alert_message=='monitoring'){
                   this.imgUrl = this.monitoringOnUrl
          }  
     },
    
   mounted(){
+      /**
+       * socket connection
+       * @function
+       */
      this.imgUrl = this.goodImgUrl
      store.dispatch("set_message", "monitoring")
      SocketioService.setupSocketConnection();
