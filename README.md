@@ -1,6 +1,7 @@
 # monitoring
 
-To run frontend
+Our frontend is developed using Vue.js and Vuetlify(https://vuetifyjs.com/en/).
+
 ## Project setup
 ```
 npm install
@@ -17,7 +18,7 @@ npm run build
 ```
 
 ----------------------------------------
-To run backend server :
+Backend uses node.js, websocket and python shell to run the drowsiness detection algorithm.
 ```
 node server.js
 ```
